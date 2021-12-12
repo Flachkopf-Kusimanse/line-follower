@@ -1,7 +1,7 @@
 //IR SENSORS
     int s4=4;      //left
-    int s5=5;    //medio izqda
-    int s6=6;   // medio dcha
+    int s5=5;    //mid left
+    int s6=6;   //mid right
     int s7=7;   // right
     // MOTOR ONE
     int enA = 3;    //Right motor, SpeedA
@@ -168,24 +168,23 @@ if(cup==false)
       
  }
 
-      //REVISAR
+ 
        else if (distance<stopdistance && stage==1 ||  distance<stopdistance && stage==2)
        {
-        Serial.println("VASO ENCONTRADO");
+        Serial.println("CUP FOUND");
       
               pickup(); // pick up the cup by lowering the catchloop
               cup=true;
-              Serial.println("VASO COGIDO");
+              Serial.println("CUP");
             
        }
         else if( distance<stopdistance && stage==3)
        {
-        Serial.println("VASO ENCONTRADO");
+        Serial.println("CUP FOUND");
               pickup(); // pick up the cup by lowering the catchloop
               cup=true;
-              Serial.println("VASO COGIDO");
+              Serial.println("CUP");
         }
- 
  }
 
  
@@ -195,9 +194,9 @@ else
   if ( stage==1   || stage==2)
  {    
        while(online==false){
-        Serial.println("EMPEZANDO 180");
+        Serial.println("START 180");
           turn180cup();
-          Serial.println("180 TERMINADO");
+          Serial.println("180 FINISHED");
         }
 
 
@@ -258,9 +257,9 @@ else
  {    
       while(online==false){
         
-         Serial.println("EMPEZANDO 180");
+         Serial.println("START 180");
           turn180cup();
-          Serial.println("180 TERMINADO");
+          Serial.println("180 FINISHED");
         }
 
       if(digitalRead(s4)==HIGH && digitalRead(s5)==LOW && digitalRead(s6)==LOW && digitalRead(s7)==HIGH && online==true)  //GO STRAIGHT
@@ -363,21 +362,7 @@ else
     
 
 
-void pickup() // pick up the cup
-    {
 
-       //Stop both the Motors
-      digitalWrite(MotorAip1,HIGH);
-      digitalWrite(MotorAip2,HIGH);
-      digitalWrite(MotorBip1,LOW);
-      digitalWrite(MotorBip2,HIGH);
-      delay(2000);
-      myservo.write(99); //rotate
-      delay(1700);
-      myservo.write(87);
-      //turn180();
-      
-    }
 
 
 void gostraight() 
@@ -392,17 +377,7 @@ void gostraight()
      
     }
 
-void goback() 
-    { 
-        //Move both the Motors
-        digitalWrite(MotorAip1,LOW);
-        digitalWrite(MotorAip2,LOW);
-        digitalWrite(MotorBip1,HIGH);
-        digitalWrite(MotorBip2,LOW);
-        analogWrite (enA, vels);
-        analogWrite (enB, vels);        
-     
-    }    
+    
 void tiltleft() 
     {
         //Tilt robot towards left by stopping the left wheel and moving the right one
@@ -532,6 +507,7 @@ void turn180 ()
           analogWrite (enB, veltsl);
         }
   }
+
   void turn180cup()
   {
     //Tilt robot towards right by stopping the right wheel and moving the left one
@@ -541,9 +517,7 @@ void turn180 ()
             digitalWrite(MotorBip2,HIGH);
             analogWrite (enA, veltuacup);
 
-
-            
-          
+      
           if ( digitalRead(s4)==LOW && digitalRead(s5)==LOW && digitalRead(s6)==HIGH && digitalRead(s7)==HIGH || digitalRead(s4)==LOW && digitalRead(s5)==LOW && digitalRead(s6)==LOW && digitalRead(s7)==HIGH || digitalRead(s4)==HIGH && digitalRead(s5)==LOW && digitalRead(s6)==HIGH && digitalRead(s7)==HIGH)
           {
 
@@ -566,50 +540,6 @@ void turn180 ()
             online=true;
           }
 
-//            if (digitalRead(s4)==HIGH && digitalRead(s5)==LOW && digitalRead(s6)==LOW && digitalRead(s7)==HIGH)
-//            {
-//            digitalWrite(MotorAip1,HIGH);     
-//            digitalWrite(MotorAip2,LOW);
-//            digitalWrite(MotorBip1,LOW);
-//            digitalWrite(MotorBip2,LOW);
-//            analogWrite (enA, veltl);
-//            analogWrite (enB, velth);
-//              online= true;
-//          Serial.println("LINEA ENCONTRADA");
-//            }
-
-
-          
-
-     
-          
-          
-              
-          
-          
-            
-                     
-//          
-//          else if (digitalRead(s4)==HIGH && digitalRead(s5)==LOW && digitalRead(s6)==LOW && digitalRead(s7)==HIGH && online==true) 
-//          {
-//          //Move both the Motors
-//          digitalWrite(MotorAip1,HIGH);
-//          digitalWrite(MotorAip2,LOW);
-//          digitalWrite(MotorBip1,LOW);
-//          digitalWrite(MotorBip2,LOW);
-//          analogWrite (enA, vels);
-//          analogWrite (enB, vels);
-//        }
-//        else if (digitalRead(s4)==HIGH && digitalRead(s5)==HIGH && digitalRead(s6)==HIGH && digitalRead(s7)==LOW && online==true) 
-//        {
-//          //Move both the Motors
-//          digitalWrite(MotorAip1,HIGH);
-//          digitalWrite(MotorAip2,LOW);
-//          digitalWrite(MotorBip1,LOW);
-//          digitalWrite(MotorBip2,LOW);
-//          analogWrite (enA, veltsh);
-//          analogWrite (enB, veltsl);
-//        }
   }
 
 void stopmotors()
@@ -623,12 +553,28 @@ void stopmotors()
 
   }
 
+void pickup() // pick up the cup
+    {
+
+       //Stop both the Motors
+      digitalWrite(MotorAip1,HIGH);
+      digitalWrite(MotorAip2,HIGH);
+      digitalWrite(MotorBip1,LOW);
+      digitalWrite(MotorBip2,HIGH);
+      delay(2000);
+      myservo.write(99); //rotate
+      delay(1700);
+      myservo.write(87);
+      
+    }
+
   void releasecup()
   {
           myservo.write(81); //rotate
       delay(2000);
       myservo.write(87);
   }
+
   void celebrate()
   {
       for (int thisNote = 0; melody[thisNote]!=-1; thisNote++) {
